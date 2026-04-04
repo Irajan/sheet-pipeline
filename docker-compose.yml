@@ -6,6 +6,7 @@ services:
     environment:
       - CONFIG_PATH=config.yaml
       - PYTHONPATH=/app
+      - GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}
     volumes:
       - .:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload

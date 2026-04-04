@@ -3,7 +3,7 @@ from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-from config import get_credentials_path
+from config import get_credentials_info
 
 
 class SheetsClient:
@@ -13,8 +13,8 @@ class SheetsClient:
 
     def _get_service(self):
         if self._service is None:
-            creds = service_account.Credentials.from_service_account_file(
-                get_credentials_path(),
+            creds = service_account.Credentials.from_service_account_info(
+                get_credentials_info(),
                 scopes=["https://www.googleapis.com/auth/spreadsheets"],
             )
             self._service = build("sheets", "v4", credentials=creds)

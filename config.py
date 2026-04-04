@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -17,8 +18,14 @@ def load_config() -> dict:
         return yaml.safe_load(f)
 
 
-def get_credentials_path() -> str:
-    config = load_config()
-    app_dir = Path(__file__).parent
-    cred_path = config.get("credentials_path", "credentials.json")
-    return str(app_dir / cred_path)
+def get_credentials_info() -> dict:
+    env_creds = os.environ.get("GOOGLE_CREDENTIALS")
+    if not env_creds:
+        raise RuntimeError(
+            "GOOGLE_CREDENTIALS environment variable is not set. "
+            "Set it to the JSON content of your service account credentials."
+        )
+    try:
+        return json.loads(env_creds)
+    except json.JSONDecodeError as e:
+        raise ValueError("GOOGLE_CREDENTIALS is not valid JSON") from e
