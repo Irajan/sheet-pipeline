@@ -4,6 +4,7 @@ import zipfile
 from io import BytesIO
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
 from models import (
@@ -20,6 +21,14 @@ app = FastAPI(
     title="Google Sheets API",
     description="API wrapper for Google Sheets - read and write data",
     version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 _client = SheetsClient()
